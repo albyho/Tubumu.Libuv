@@ -25,7 +25,7 @@ namespace Tubumu.Libuv
             FromIntPtr<CallbackHandle>(handle).OnCallback();
         }
 
-        public event Action Callback;
+        public event Action? Callback;
 
         protected void OnCallback()
         {

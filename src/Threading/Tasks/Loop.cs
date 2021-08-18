@@ -7,7 +7,7 @@ namespace Tubumu.Libuv
 {
     public partial class Loop
     {
-        private TaskFactory taskfactory = null;
+        private TaskFactory? taskfactory = null;
 
         public TaskFactory TaskFactory
         {
@@ -62,7 +62,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        public static Loop Current
+        public static Loop? Current
         {
             get
             {
@@ -74,7 +74,7 @@ namespace Tubumu.Libuv
                 var current = SynchronizationContext.Current;
                 if (current is LoopSynchronizationContext)
                 {
-                    return (current as LoopSynchronizationContext).Loop;
+                    return ((LoopSynchronizationContext)current).Loop;
                 }
 
                 // TODO: Think about returning exception

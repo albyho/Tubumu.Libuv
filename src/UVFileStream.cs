@@ -13,7 +13,7 @@ namespace Tubumu.Libuv
         {
         }
 
-        public void Close(Action callback)
+        public void Close(Action? callback)
         {
             Close((ex) =>
             {
@@ -51,21 +51,21 @@ namespace Tubumu.Libuv
             Loop = loop;
         }
 
-        private UVFile uvfile;
+        private UVFile? uvfile;
 
-        public void OpenRead(string path, Action<Exception> callback)
+        public void OpenRead(string path, Action<Exception?>? callback)
         {
             Open(path, UVFileAccess.Read, callback);
         }
 
-        public void OpenWrite(string path, Action<Exception> callback)
+        public void OpenWrite(string path, Action<Exception?>? callback)
         {
             Open(path, UVFileAccess.Write, callback);
         }
 
-        public void Open(string path, UVFileAccess access, Action<Exception> callback)
+        public void Open(string path, UVFileAccess access, Action<Exception?>? callback)
         {
-            Ensure.ArgumentNotNull(callback, "path");
+            Ensure.ArgumentNotNull(path, "path");
 
             switch (access)
             {
@@ -98,14 +98,14 @@ namespace Tubumu.Libuv
             Complete?.Invoke();
         }
 
-        public event Action Complete;
+        public event Action? Complete;
 
         protected void OnError(Exception ex)
         {
             Error?.Invoke(ex);
         }
 
-        public event Action<Exception> Error;
+        public event Action<Exception>? Error;
 
         public bool Readable { get; private set; }
 
@@ -113,7 +113,7 @@ namespace Tubumu.Libuv
         private bool reading = false;
         private int readposition = 0;
 
-        private void HandleRead(Exception ex, int size)
+        private void HandleRead(Exception? ex, int? size)
         {
             if (!reading)
             {
@@ -126,17 +126,17 @@ namespace Tubumu.Libuv
                 return;
             }
 
-            if (size == 0)
+            if ((size.HasValue && size == 0) || !size.HasValue)
             {
-                uvfile.Close((ex2) =>
+                uvfile?.Close((ex2) =>
                 {
                     OnComplete();
                 });
                 return;
             }
 
-            readposition += size;
-            OnData(new ArraySegment<byte>(buffer, 0, size));
+            readposition += size.Value;
+            OnData(new ArraySegment<byte>(buffer, 0, size.Value));
 
             if (reading)
             {
@@ -146,7 +146,7 @@ namespace Tubumu.Libuv
 
         private void WorkRead()
         {
-            uvfile.Read(Loop, readposition, new ArraySegment<byte>(buffer, 0, buffer.Length), HandleRead);
+            uvfile?.Read(Loop, readposition, new ArraySegment<byte>(buffer, 0, buffer.Length), HandleRead);
         }
 
         public void Resume()
@@ -165,12 +165,12 @@ namespace Tubumu.Libuv
             Data?.Invoke(data);
         }
 
-        public event Action<ArraySegment<byte>> Data;
+        public event Action<ArraySegment<byte>>? Data;
 
         private int writeoffset = 0;
-        private readonly Queue<Tuple<ArraySegment<byte>, Action<Exception>>> queue = new Queue<Tuple<ArraySegment<byte>, Action<Exception>>>();
+        private readonly Queue<Tuple<ArraySegment<byte>, Action<Exception?>?>> queue = new Queue<Tuple<ArraySegment<byte>, Action<Exception?>?>>();
 
-        private void HandleWrite(Exception ex, int size)
+        private void HandleWrite(Exception? ex, int? size)
         {
             var tuple = queue.Dequeue();
 
@@ -178,7 +178,10 @@ namespace Tubumu.Libuv
 
             tuple.Item2?.Invoke(ex);
 
-            writeoffset += size;
+            if (size.HasValue && size.Value > 0)
+            {
+                writeoffset += size.Value;
+            }
             WorkWrite();
         }
 
@@ -188,7 +191,7 @@ namespace Tubumu.Libuv
             {
                 if (shutdown)
                 {
-                    uvfile.Truncate(writeoffset, Finish);
+                    uvfile?.Truncate(writeoffset, Finish);
                     //uvfile.Close(shutdownCallback);
                 }
                 OnDrain();
@@ -197,13 +200,13 @@ namespace Tubumu.Libuv
             {
                 // handle next write
                 var item = queue.Peek();
-                uvfile.Write(Loop, writeoffset, item.Item1, HandleWrite);
+                uvfile?.Write(Loop, writeoffset, item.Item1, HandleWrite);
             }
         }
 
-        private void Finish(Exception ex)
+        private void Finish(Exception? ex)
         {
-            uvfile.Close((ex2) =>
+            uvfile?.Close((ex2) =>
             {
                 uvfile = null;
                 IsClosing = false;
@@ -216,13 +219,13 @@ namespace Tubumu.Libuv
             Drain?.Invoke();
         }
 
-        public event Action Drain;
+        public event Action? Drain;
 
         public long WriteQueueSize { get; private set; }
 
         public bool Writeable { private set; get; }
 
-        public void Write(ArraySegment<byte> data, Action<Exception> callback)
+        public void Write(ArraySegment<byte> data, Action<Exception?>? callback)
         {
             queue.Enqueue(Tuple.Create(data, callback));
             WriteQueueSize += data.Count;
@@ -233,24 +236,24 @@ namespace Tubumu.Libuv
         }
 
         private bool shutdown = false;
-        private Action<Exception> shutdownCallback = null;
+        private Action<Exception?>? shutdownCallback = null;
 
-        public void Shutdown(Action<Exception> callback)
+        public void Shutdown(Action<Exception?>? callback)
         {
             shutdown = true;
             shutdownCallback = callback;
             if (queue.Count == 0)
             {
-                uvfile.Truncate(writeoffset, Finish);
+                uvfile?.Truncate(writeoffset, Finish);
             }
         }
 
-        private void Close(Action<Exception> callback)
+        private void Close(Action<Exception?>? callback)
         {
             if (!IsClosed && !IsClosing)
             {
                 IsClosing = true;
-                uvfile.Close(callback);
+                uvfile?.Close(callback);
             }
         }
 

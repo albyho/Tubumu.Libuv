@@ -50,14 +50,11 @@ namespace Tubumu.Libuv
             OnEvent((PollEvent)events);
         }
 
-        public event Action<PollEvent> Event;
+        public event Action<PollEvent>? Event;
 
         private void OnEvent(PollEvent events)
         {
-            if (Event != null)
-            {
-                Event(events);
-            }
+            Event?.Invoke(events);
         }
     }
 }

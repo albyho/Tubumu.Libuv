@@ -29,17 +29,17 @@ namespace Tubumu.Libuv
 
         public Loop Loop { get; protected set; }
         public int FileDescriptor { get; protected set; }
-        public Encoding Encoding { get; set; }
+        public Encoding? Encoding { get; set; }
 
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_open(IntPtr loop, IntPtr req, string path, int flags, int mode, NativeMethods.uv_fs_cb callback);
 
-        public static void Open(Loop loop, string path, UVFileAccess access, Action<Exception, UVFile> callback)
+        public static void Open(Loop loop, string path, UVFileAccess access, Action<Exception?, UVFile?> callback)
         {
             var fsr = new FileSystemRequest(path);
             fsr.Callback = (ex) =>
             {
-                UVFile file = null;
+                UVFile? file = null;
                 if (fsr.Result != IntPtr.Zero)
                 {
                     file = new UVFile(loop, fsr.Result.ToInt32());
@@ -50,7 +50,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        public static void Open(string path, UVFileAccess access, Action<Exception, UVFile> callback)
+        public static void Open(string path, UVFileAccess access, Action<Exception?, UVFile?> callback)
         {
             Open(Loop.Constructor, path, access, callback);
         }
@@ -58,7 +58,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_close(IntPtr loop, IntPtr req, int fd, NativeMethods.uv_fs_cb callback);
 
-        public void Close(Loop loop, Action<Exception> callback)
+        public void Close(Loop loop, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -73,7 +73,7 @@ namespace Tubumu.Libuv
             Close(loop, null);
         }
 
-        public void Close(Action<Exception> callback)
+        public void Close(Action<Exception?>? callback)
         {
             Close(Loop, callback);
         }
@@ -86,7 +86,12 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_read(IntPtr loop, IntPtr req, int fd, uv_buf_t[] buf, int nbufs, long offset, NativeMethods.uv_fs_cb callback);
 
-        public void Read(Loop loop, int offset, ArraySegment<byte> segment, Action<Exception, int> callback)
+        public void Read(Loop loop, int offset, byte[] data, int index, int count, Action<Exception?, int?>? callback)
+        {
+            Read(loop, offset, new ArraySegment<byte>(data, index, count), callback);
+        }
+
+        public void Read(Loop loop, int offset, ArraySegment<byte> segment, Action<Exception?, int?>? callback)
         {
             var datagchandle = GCHandle.Alloc(segment.Array, GCHandleType.Pinned);
             var fsr = new FileSystemRequest();
@@ -101,23 +106,18 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        public void Read(Loop loop, int offset, byte[] data, int index, int count, Action<Exception, int> callback)
-        {
-            Read(loop, offset, new ArraySegment<byte>(data, index, count), callback);
-        }
-
-        public void Read(Loop loop, byte[] data, int index, int count, Action<Exception, int> callback)
+        public void Read(Loop loop, byte[] data, int index, int count, Action<Exception?, int?>? callback)
         {
             Read(loop, -1, data, index, count, callback);
         }
 
-        public void Read(Loop loop, int offset, byte[] data, Action<Exception, int> callback)
+        public void Read(Loop loop, int offset, byte[] data, Action<Exception?, int?>? callback)
         {
             Ensure.ArgumentNotNull(data, "data");
             Read(loop, offset, data, 0, data.Length, callback);
         }
 
-        public void Read(Loop loop, byte[] data, Action<Exception, int> callback)
+        public void Read(Loop loop, byte[] data, Action<Exception?, int?> callback)
         {
             Read(loop, -1, data, callback);
         }
@@ -138,22 +138,22 @@ namespace Tubumu.Libuv
             Read(loop, data, 0, data.Length);
         }
 
-        public void Read(int offset, byte[] data, int index, int count, Action<Exception, int> callback)
+        public void Read(int offset, byte[] data, int index, int count, Action<Exception?, int?>? callback)
         {
             Read(this.Loop, offset, data, index, count, callback);
         }
 
-        public void Read(byte[] data, int index, int count, Action<Exception, int> callback)
+        public void Read(byte[] data, int index, int count, Action<Exception?, int?> callback)
         {
             Read(this.Loop, data, index, count, callback);
         }
 
-        public void Read(int offset, byte[] data, Action<Exception, int> callback)
+        public void Read(int offset, byte[] data, Action<Exception?, int?> callback)
         {
             Read(this.Loop, offset, data, callback);
         }
 
-        public void Read(byte[] data, Action<Exception, int> callback)
+        public void Read(byte[] data, Action<Exception?, int?> callback)
         {
             Read(this.Loop, data, callback);
         }
@@ -173,7 +173,7 @@ namespace Tubumu.Libuv
             Read(this.Loop, data);
         }
 
-        public void Read(Loop loop, ArraySegment<byte> data, Action<Exception, int> callback)
+        public void Read(Loop loop, ArraySegment<byte> data, Action<Exception?, int?>? callback)
         {
             Read(loop, -1, data, callback);
         }
@@ -188,12 +188,12 @@ namespace Tubumu.Libuv
             Read(loop, data, null);
         }
 
-        public void Read(int offset, ArraySegment<byte> data, Action<Exception, int> callback)
+        public void Read(int offset, ArraySegment<byte> data, Action<Exception?, int?>? callback)
         {
             Read(Loop, offset, data, callback);
         }
 
-        public void Read(ArraySegment<byte> data, Action<Exception, int> callback)
+        public void Read(ArraySegment<byte> data, Action<Exception?, int?>? callback)
         {
             Read(-1, data, callback);
         }
@@ -208,14 +208,14 @@ namespace Tubumu.Libuv
             Read(data, null);
         }
 
-        public int Read(Loop loop, int offset, Encoding encoding, string text, Action<Exception, int> callback)
+        public int Read(Loop loop, int offset, Encoding encoding, string text, Action<Exception?, int?>? callback)
         {
             var bytes = encoding.GetBytes(text);
             Read(loop, offset, bytes, callback);
             return bytes.Length;
         }
 
-        public int Read(Loop loop, Encoding encoding, string text, Action<Exception, int> callback)
+        public int Read(Loop loop, Encoding encoding, string text, Action<Exception?, int?>? callback)
         {
             return Read(loop, -1, encoding, text, callback);
         }
@@ -230,12 +230,12 @@ namespace Tubumu.Libuv
             return Read(loop, -1, encoding, text);
         }
 
-        public int Read(Loop loop, int offset, string text, Action<Exception, int> callback)
+        public int Read(Loop loop, int offset, string text, Action<Exception?, int?>? callback)
         {
             return Read(loop, offset, Encoding ?? Encoding.UTF8, text, callback);
         }
 
-        public int Read(Loop loop, string text, Action<Exception, int> callback)
+        public int Read(Loop loop, string text, Action<Exception?, int?> callback)
         {
             return Read(loop, -1, text, callback);
         }
@@ -253,7 +253,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_write(IntPtr loop, IntPtr req, int fd, uv_buf_t[] bufs, int nbufs, long offset, NativeMethods.uv_fs_cb fs_cb);
 
-        public void Write(Loop loop, int offset, ArraySegment<byte> segment, Action<Exception, int> callback)
+        public void Write(Loop loop, int offset, ArraySegment<byte> segment, Action<Exception?, int?>? callback)
         {
             var datagchandle = GCHandle.Alloc(segment.Array, GCHandleType.Pinned);
             var fsr = new FileSystemRequest();
@@ -268,22 +268,22 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        public void Write(Loop loop, int offset, byte[] data, int index, int count, Action<Exception, int> callback)
+        public void Write(Loop loop, int offset, byte[] data, int index, int count, Action<Exception?, int?>? callback)
         {
             Write(loop, offset, new ArraySegment<byte>(data, index, count), callback);
         }
 
-        public void Write(Loop loop, byte[] data, int index, int count, Action<Exception, int> callback)
+        public void Write(Loop loop, byte[] data, int index, int count, Action<Exception?, int?>? callback)
         {
             Write(loop, -1, data, index, count, callback);
         }
 
-        public void Write(Loop loop, int offset, byte[] data, Action<Exception, int> callback)
+        public void Write(Loop loop, int offset, byte[] data, Action<Exception?, int?>? callback)
         {
             Write(loop, offset, data, 0, data.Length, callback);
         }
 
-        public void Write(Loop loop, byte[] data, Action<Exception, int> callback)
+        public void Write(Loop loop, byte[] data, Action<Exception?, int?>? callback)
         {
             Write(loop, -1, data, callback);
         }
@@ -304,22 +304,22 @@ namespace Tubumu.Libuv
             Write(loop, data, 0, data.Length);
         }
 
-        public void Write(int offset, byte[] data, int index, int count, Action<Exception, int> callback)
+        public void Write(int offset, byte[] data, int index, int count, Action<Exception?, int?>? callback)
         {
             Write(this.Loop, offset, data, index, count, callback);
         }
 
-        public void Write(byte[] data, int index, int count, Action<Exception, int> callback)
+        public void Write(byte[] data, int index, int count, Action<Exception?, int?>? callback)
         {
             Write(-1, data, index, count, callback);
         }
 
-        public void Write(int offset, byte[] data, Action<Exception, int> callback)
+        public void Write(int offset, byte[] data, Action<Exception?, int?>? callback)
         {
             Write(this.Loop, offset, data, callback);
         }
 
-        public void Write(byte[] data, Action<Exception, int> callback)
+        public void Write(byte[] data, Action<Exception?, int?>? callback)
         {
             Write(this.Loop, data, callback);
         }
@@ -340,7 +340,7 @@ namespace Tubumu.Libuv
             Write(data, 0, data.Length);
         }
 
-        public void Write(Loop loop, ArraySegment<byte> data, Action<Exception, int> callback)
+        public void Write(Loop loop, ArraySegment<byte> data, Action<Exception?, int?>? callback)
         {
             Write(loop, -1, data, callback);
         }
@@ -355,12 +355,12 @@ namespace Tubumu.Libuv
             Write(loop, data, null);
         }
 
-        public void Write(int offset, ArraySegment<byte> data, Action<Exception, int> callback)
+        public void Write(int offset, ArraySegment<byte> data, Action<Exception?, int?>? callback)
         {
             Write(Loop, offset, data, callback);
         }
 
-        public void Write(ArraySegment<byte> data, Action<Exception, int> callback)
+        public void Write(ArraySegment<byte> data, Action<Exception?, int?>? callback)
         {
             Write(-1, data, callback);
         }
@@ -375,14 +375,14 @@ namespace Tubumu.Libuv
             Write(data, null);
         }
 
-        public int Write(Loop loop, int offset, Encoding encoding, string text, Action<Exception, int> callback)
+        public int Write(Loop loop, int offset, Encoding encoding, string text, Action<Exception?, int?>? callback)
         {
             var bytes = encoding.GetBytes(text);
             Write(loop, offset, bytes, callback);
             return bytes.Length;
         }
 
-        public int Write(Loop loop, Encoding encoding, string text, Action<Exception, int> callback)
+        public int Write(Loop loop, Encoding encoding, string text, Action<Exception?, int?>? callback)
         {
             return Write(loop, -1, encoding, text, callback);
         }
@@ -397,12 +397,12 @@ namespace Tubumu.Libuv
             return Write(loop, -1, encoding, text);
         }
 
-        public int Write(Loop loop, int offset, string text, Action<Exception, int> callback)
+        public int Write(Loop loop, int offset, string text, Action<Exception?, int?>? callback)
         {
             return Write(loop, offset, Encoding ?? Encoding.UTF8, text, callback);
         }
 
-        public int Write(Loop loop, string text, Action<Exception, int> callback)
+        public int Write(Loop loop, string text, Action<Exception?, int?>? callback)
         {
             return Write(loop, -1, text, callback);
         }
@@ -417,12 +417,12 @@ namespace Tubumu.Libuv
             return Write(loop, -1, text);
         }
 
-        public int Write(int offset, Encoding encoding, string text, Action<Exception, int> callback)
+        public int Write(int offset, Encoding encoding, string text, Action<Exception?, int?>? callback)
         {
             return Write(this.Loop, offset, encoding, text, callback);
         }
 
-        public int Write(Encoding encoding, string text, Action<Exception, int> callback)
+        public int Write(Encoding encoding, string text, Action<Exception?, int?>? callback)
         {
             return Write(this.Loop, encoding, text, callback);
         }
@@ -437,12 +437,12 @@ namespace Tubumu.Libuv
             return Write(this.Loop, encoding, text);
         }
 
-        public int Write(int offset, string text, Action<Exception, int> callback)
+        public int Write(int offset, string text, Action<Exception?, int?>? callback)
         {
             return Write(this.Loop, offset, text, callback);
         }
 
-        public int Write(string text, Action<Exception, int> callback)
+        public int Write(string text, Action<Exception?, int?>? callback)
         {
             return Write(this.Loop, text, callback);
         }
@@ -460,7 +460,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_stat(IntPtr loop, IntPtr req, string path, NativeMethods.uv_fs_cb callback);
 
-        public static void Stat(Loop loop, string path, Action<Exception, UVFileStat> callback)
+        public static void Stat(Loop loop, string path, Action<Exception?, UVFileStat>? callback)
         {
             var fsr = new FileSystemRequest();
             fsr.Callback = (ex) =>
@@ -474,7 +474,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        public static void Stat(string path, Action<Exception, UVFileStat> callback)
+        public static void Stat(string path, Action<Exception?, UVFileStat> callback)
         {
             Stat(Loop.Constructor, path, callback);
         }
@@ -482,7 +482,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fstat(IntPtr loop, IntPtr req, int fd, NativeMethods.uv_fs_cb callback);
 
-        public void Stat(Loop loop, Action<Exception, UVFileStat> callback)
+        public void Stat(Loop loop, Action<Exception?, UVFileStat>? callback)
         {
             var fsr = new FileSystemRequest();
             fsr.Callback = (ex) =>
@@ -499,7 +499,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fsync(IntPtr loop, IntPtr req, int fd, NativeMethods.uv_fs_cb callback);
 
-        public void Sync(Loop loop, Action<Exception> callback)
+        public void Sync(Loop loop, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -514,20 +514,20 @@ namespace Tubumu.Libuv
             Sync(loop, null);
         }
 
-        public void Sync(Action<Exception> callback)
+        public void Sync(Action<Exception?>? callback)
         {
             Sync(Loop.Constructor, callback);
         }
 
         public void Sync()
         {
-            Sync((Action<Exception>)null);
+            Sync((Action<Exception?>?)null);
         }
 
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fdatasync(IntPtr loop, IntPtr req, int fd, NativeMethods.uv_fs_cb callback);
 
-        public void DataSync(Loop loop, Action<Exception> callback)
+        public void DataSync(Loop loop, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -542,20 +542,20 @@ namespace Tubumu.Libuv
             DataSync(loop, null);
         }
 
-        public void DataSync(Action<Exception> callback)
+        public void DataSync(Action<Exception?>? callback)
         {
             DataSync(Loop.Constructor, callback);
         }
 
         public void DataSync()
         {
-            DataSync((Action<Exception>)null);
+            DataSync((Action<Exception?>?)null);
         }
 
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_ftruncate(IntPtr loop, IntPtr req, int file, long offset, NativeMethods.uv_fs_cb callback);
 
-        public void Truncate(Loop loop, int offset, Action<Exception> callback)
+        public void Truncate(Loop loop, int offset, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -570,7 +570,7 @@ namespace Tubumu.Libuv
             Truncate(loop, offset);
         }
 
-        public void Truncate(int offset, Action<Exception> callback)
+        public void Truncate(int offset, Action<Exception?>? callback)
         {
             Truncate(Loop.Constructor, offset, callback);
         }
@@ -583,7 +583,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fchmod(IntPtr loop, IntPtr req, int fd, int mode, NativeMethods.uv_fs_cb callback);
 
-        public void Chmod(Loop loop, int mode, Action<Exception> callback)
+        public void Chmod(Loop loop, int mode, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -598,7 +598,7 @@ namespace Tubumu.Libuv
             Chmod(loop, mode, null);
         }
 
-        public void Chmod(int mode, Action<Exception> callback)
+        public void Chmod(int mode, Action<Exception?>? callback)
         {
             Chmod(Loop.Constructor, mode, callback);
         }
@@ -611,7 +611,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_chmod(IntPtr loop, IntPtr req, string path, int mode, NativeMethods.uv_fs_cb callback);
 
-        public static void Chmod(Loop loop, string path, int mode, Action<Exception> callback)
+        public static void Chmod(Loop loop, string path, int mode, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -626,7 +626,7 @@ namespace Tubumu.Libuv
             Chmod(loop, path, mode, null);
         }
 
-        public static void Chmod(string path, int mode, Action<Exception> callback)
+        public static void Chmod(string path, int mode, Action<Exception?>? callback)
         {
             Chmod(Loop.Constructor, path, mode, callback);
         }
@@ -639,7 +639,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_chown(IntPtr loop, IntPtr req, string path, int uid, int gid, NativeMethods.uv_fs_cb callback);
 
-        public static void Chown(Loop loop, string path, int uid, int gid, Action<Exception> callback)
+        public static void Chown(Loop loop, string path, int uid, int gid, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -654,7 +654,7 @@ namespace Tubumu.Libuv
             Chown(loop, path, uid, gid, null);
         }
 
-        public static void Chown(string path, int uid, int gid, Action<Exception> callback)
+        public static void Chown(string path, int uid, int gid, Action<Exception?>? callback)
         {
             Chown(Loop.Constructor, path, uid, gid, callback);
         }
@@ -667,7 +667,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fchown(IntPtr loop, IntPtr req, int fd, int uid, int gid, NativeMethods.uv_fs_cb callback);
 
-        public void Chown(Loop loop, int uid, int gid, Action<Exception> callback)
+        public void Chown(Loop loop, int uid, int gid, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -682,7 +682,7 @@ namespace Tubumu.Libuv
             Chown(loop, uid, gid, null);
         }
 
-        public void Chown(int uid, int gid, Action<Exception> callback)
+        public void Chown(int uid, int gid, Action<Exception?>? callback)
         {
             Chown(Loop.Constructor, uid, gid, callback);
         }
@@ -695,7 +695,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_unlink(IntPtr loop, IntPtr req, string path, NativeMethods.uv_fs_cb callback);
 
-        public static void Unlink(Loop loop, string path, Action<Exception> callback)
+        public static void Unlink(Loop loop, string path, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -710,7 +710,7 @@ namespace Tubumu.Libuv
             Unlink(loop, path, null);
         }
 
-        public static void Unlink(string path, Action<Exception> callback)
+        public static void Unlink(string path, Action<Exception?>? callback)
         {
             Unlink(Loop.Constructor, path, callback);
         }
@@ -723,7 +723,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_link(IntPtr loop, IntPtr req, string path, string newPath, NativeMethods.uv_fs_cb callback);
 
-        public static void Link(Loop loop, string path, string newPath, Action<Exception> callback)
+        public static void Link(Loop loop, string path, string newPath, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -738,7 +738,7 @@ namespace Tubumu.Libuv
             Link(loop, path, newPath, null);
         }
 
-        public static void Link(string path, string newPath, Action<Exception> callback)
+        public static void Link(string path, string newPath, Action<Exception?>? callback)
         {
             Link(Loop.Constructor, path, newPath, callback);
         }
@@ -751,7 +751,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_symlink(IntPtr loop, IntPtr req, string path, string newPath, int flags, NativeMethods.uv_fs_cb callback);
 
-        public static void Symlink(Loop loop, string path, string newPath, Action<Exception> callback)
+        public static void Symlink(Loop loop, string path, string newPath, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest
             {
@@ -766,7 +766,7 @@ namespace Tubumu.Libuv
             Symlink(loop, path, newPath, null);
         }
 
-        public static void Symlink(string path, string newPath, Action<Exception> callback)
+        public static void Symlink(string path, string newPath, Action<Exception?>? callback)
         {
             Symlink(Loop.Constructor, path, newPath, callback);
         }
@@ -779,12 +779,12 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_readlink(IntPtr loop, IntPtr req, string path, NativeMethods.uv_fs_cb callback);
 
-        public static void Readlink(Loop loop, string path, Action<Exception, string> callback)
+        public static void Readlink(Loop loop, string path, Action<Exception?, string?> callback)
         {
             var fsr = new FileSystemRequest(path);
             fsr.Callback = (ex) =>
             {
-                string res = null;
+                string? res = null;
                 if (ex == null)
                 {
                     res = Marshal.PtrToStringAuto(fsr.Pointer);
@@ -795,7 +795,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        public static void Readlink(string path, Action<Exception, string> callback)
+        public static void Readlink(string path, Action<Exception?, string?> callback)
         {
             Readlink(Loop.Constructor, path, callback);
         }

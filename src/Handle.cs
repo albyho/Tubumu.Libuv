@@ -104,7 +104,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        public event Action Closed;
+        public event Action? Closed;
 
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_close(IntPtr handle, close_callback cb);
@@ -112,7 +112,7 @@ namespace Tubumu.Libuv
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void close_callback(IntPtr handle);
 
-        private Action closeCallback;
+        private Action? closeCallback;
 
         private static readonly close_callback close_cb = CloseCallback;
 
@@ -122,7 +122,7 @@ namespace Tubumu.Libuv
             handle.Cleanup(handlePointer, handle.closeCallback);
         }
 
-        public void Cleanup(IntPtr nativeHandle, Action callback)
+        public void Cleanup(IntPtr nativeHandle, Action? callback)
         {
             // Remove handle
             if (NativeHandle != IntPtr.Zero)
@@ -135,10 +135,7 @@ namespace Tubumu.Libuv
 
                 Closed?.Invoke();
 
-                if (callback != null)
-                {
-                    callback();
-                }
+                callback?.Invoke();
 
                 if (GCHandle.IsAllocated)
                 {
@@ -147,7 +144,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        public void Close(Action callback)
+        public void Close(Action? callback)
         {
             if (!IsClosing && !IsClosed)
             {

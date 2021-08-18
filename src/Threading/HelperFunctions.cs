@@ -32,11 +32,11 @@ namespace Tubumu.Libuv
 		}
 #endif
 
-        public static Action<Exception, T> Finish<T>(TaskCompletionSource<T> tcs, Action callback)
+        public static Action<Exception?, T?> Finish<T>(TaskCompletionSource<T?> tcs, Action? callback)
         {
             bool finished = false;
 
-            return (Exception exception, T value) =>
+            return (Exception? exception, T? value) =>
             {
                 if (finished)
                 {
@@ -58,9 +58,9 @@ namespace Tubumu.Libuv
             };
         }
 
-        public static Action<Exception> Exception(TaskCompletionSource<object> tcs)
+        public static Action<Exception?> Exception(TaskCompletionSource<object?> tcs)
         {
-            return (Exception exception) =>
+            return (Exception? exception) =>
             {
                 if (exception != null)
                 {
@@ -73,9 +73,9 @@ namespace Tubumu.Libuv
             };
         }
 
-        public static Action<Exception, TResult> Exception<TResult>(TaskCompletionSource<TResult> tcs)
+        public static Action<Exception?, TResult?> Exception<TResult>(TaskCompletionSource<TResult?> tcs)
         {
-            return (Exception exception, TResult result) =>
+            return (Exception? exception, TResult? result) =>
             {
                 if (exception != null)
                 {
@@ -88,9 +88,9 @@ namespace Tubumu.Libuv
             };
         }
 
-        public static Task WrapSingle(Action<Action> action)
+        public static Task WrapSingle(Action<Action?> action)
         {
-            var tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<object?>();
             try
             {
                 action(() => tcs.SetResult(null));
@@ -105,9 +105,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task Wrap(Action<Action<Exception>> action)
+        public static Task Wrap(Action<Action<Exception?>?> action)
         {
-            var tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<object?>();
             try
             {
                 action(Exception(tcs));
@@ -122,9 +122,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task Wrap<T>(T arg1, Action<T, Action<Exception>> action)
+        public static Task Wrap<T>(T arg1, Action<T, Action<Exception?>?> action)
         {
-            var tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<object?>();
             try
             {
                 action(arg1, Exception(tcs));
@@ -139,9 +139,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task Wrap<T1, T2>(T1 arg1, T2 arg2, Action<T1, T2, Action<Exception>> action)
+        public static Task Wrap<T1, T2>(T1 arg1, T2 arg2, Action<T1, T2, Action<Exception?>?> action)
         {
-            var tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<object?>();
             try
             {
                 action(arg1, arg2, Exception(tcs));
@@ -156,9 +156,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task Wrap<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg3, Action<T1, T2, T3, Action<Exception>> action)
+        public static Task Wrap<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg3, Action<T1, T2, T3, Action<Exception?>?> action)
         {
-            var tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<object?>();
             try
             {
                 action(arg1, arg2, arg3, Exception(tcs));
@@ -173,9 +173,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task Wrap<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, Action<T1, T2, T3, T4, Action<Exception>> action)
+        public static Task Wrap<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, Action<T1, T2, T3, T4, Action<Exception?>?> action)
         {
-            var tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<object?>();
             try
             {
                 action(arg1, arg2, arg3, arg4, Exception(tcs));
@@ -190,9 +190,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task Wrap<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, Action<T1, T2, T3, T4, T5, Action<Exception>> action)
+        public static Task Wrap<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, Action<T1, T2, T3, T4, T5, Action<Exception?>?> action)
         {
-            var tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<object?>();
             try
             {
                 action(arg1, arg2, arg3, arg4, arg5, Exception(tcs));
@@ -207,9 +207,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task<TResult> Wrap<T, TResult>(T arg1, Func<T, Action<Exception>, TResult> func)
+        public static Task<TResult?> Wrap<T, TResult>(T arg1, Func<T, Action<Exception?>?, TResult?> func)
         {
-            var tcs = new TaskCompletionSource<TResult>();
+            var tcs = new TaskCompletionSource<TResult?>();
             try
             {
                 var res = default(TResult);
@@ -235,9 +235,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task<TResult> Wrap<T1, T2, TResult>(T1 arg1, T2 arg2, Func<T1, T2, Action<Exception>, TResult> func)
+        public static Task<TResult?> Wrap<T1, T2, TResult>(T1 arg1, T2 arg2, Func<T1, T2, Action<Exception?>?, TResult?> func)
         {
-            var tcs = new TaskCompletionSource<TResult>();
+            var tcs = new TaskCompletionSource<TResult?>();
             try
             {
                 var res = default(TResult);
@@ -263,9 +263,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task<TResult> Wrap<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3, Func<T1, T2, T3, Action<Exception>, TResult> func)
+        public static Task<TResult?> Wrap<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3, Func<T1, T2, T3, Action<Exception?>?, TResult?> func)
         {
-            var tcs = new TaskCompletionSource<TResult>();
+            var tcs = new TaskCompletionSource<TResult?>();
             try
             {
                 var res = default(TResult);
@@ -291,9 +291,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task<TResult> Wrap<T, TResult>(T arg1, Action<T, Action<Exception, TResult>> action)
+        public static Task<TResult?> Wrap<T, TResult>(T arg1, Action<T, Action<Exception?, TResult?>> action)
         {
-            var tcs = new TaskCompletionSource<TResult>();
+            var tcs = new TaskCompletionSource<TResult?>();
             try
             {
                 action(arg1, Exception(tcs));
@@ -308,9 +308,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task<TResult> Wrap<T1, T2, TResult>(T1 arg1, T2 arg2, Action<T1, T2, Action<Exception, TResult>> action)
+        public static Task<TResult?> Wrap<T1, T2, TResult>(T1 arg1, T2 arg2, Action<T1, T2, Action<Exception?, TResult?>> action)
         {
-            var tcs = new TaskCompletionSource<TResult>();
+            var tcs = new TaskCompletionSource<TResult?>();
             try
             {
                 action(arg1, arg2, Exception(tcs));
@@ -325,9 +325,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task<TResult> Wrap<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3, Action<T1, T2, T3, Action<Exception, TResult>> action)
+        public static Task<TResult?> Wrap<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3, Action<T1, T2, T3, Action<Exception?, TResult?>> action)
         {
-            var tcs = new TaskCompletionSource<TResult>();
+            var tcs = new TaskCompletionSource<TResult?>();
             try
             {
                 action(arg1, arg2, arg3, Exception(tcs));
@@ -342,9 +342,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task<TResult> Wrap<T1, T2, T3, T4, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, Action<T1, T2, T3, T4, Action<Exception, TResult>> action)
+        public static Task<TResult?> Wrap<T1, T2, T3, T4, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, Action<T1, T2, T3, T4, Action<Exception?, TResult?>> action)
         {
-            var tcs = new TaskCompletionSource<TResult>();
+            var tcs = new TaskCompletionSource<TResult?>();
             try
             {
                 action(arg1, arg2, arg3, arg4, Exception(tcs));
@@ -359,9 +359,9 @@ namespace Tubumu.Libuv
             return tcs.Task;
         }
 
-        public static Task<TResult> Wrap<T1, T2, T3, T4, T5, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, Action<T1, T2, T3, T4, T5, Action<Exception, TResult>> action)
+        public static Task<TResult?> Wrap<T1, T2, T3, T4, T5, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, Action<T1, T2, T3, T4, T5, Action<Exception?, TResult?>> action)
         {
-            var tcs = new TaskCompletionSource<TResult>();
+            var tcs = new TaskCompletionSource<TResult?>();
             try
             {
                 action(arg1, arg2, arg3, arg4, arg5, Exception(tcs));

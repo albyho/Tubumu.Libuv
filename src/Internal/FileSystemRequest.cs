@@ -9,7 +9,7 @@ namespace Tubumu.Libuv
 
         protected uv_fs_t* fsrequest;
 
-        public string Path { get; private set; }
+        public string? Path { get; private set; }
 
         public FileSystemRequest()
             : base(Size)
@@ -23,7 +23,7 @@ namespace Tubumu.Libuv
             Path = path;
         }
 
-        public Action<Exception> Callback { get; set; }
+        public Action<Exception?>? Callback { get; set; }
 
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_fs_req_cleanup(IntPtr req);
@@ -60,7 +60,7 @@ namespace Tubumu.Libuv
 
         public void End(IntPtr ptr)
         {
-            Exception e = null;
+            Exception? e = null;
             var r = Result.ToInt32();
             if (r < 0)
             {
@@ -79,7 +79,7 @@ namespace Tubumu.Libuv
 
         public static void StaticEnd(IntPtr ptr)
         {
-            PermaRequest.GetObject<FileSystemRequest>(ptr).End(ptr);
+            PermaRequest.GetObject<FileSystemRequest>(ptr)?.End(ptr);
         }
     }
 }

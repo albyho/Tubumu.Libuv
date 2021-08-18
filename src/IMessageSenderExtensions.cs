@@ -7,7 +7,7 @@ namespace Tubumu.Libuv
     {
         #region IPAddress string
 
-        public static void Send<TMessage>(this IMessageSender<TMessage> sender, string ipAddress, int port, byte[] data, Action<Exception> callback)
+        public static void Send<TMessage>(this IMessageSender<TMessage> sender, string ipAddress, int port, byte[] data, Action<Exception?>? callback)
             where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
         {
             Ensure.ArgumentNotNull(ipAddress, "ipAddress");
@@ -21,7 +21,7 @@ namespace Tubumu.Libuv
             sender.Send(ipAddress, port, data, null);
         }
 
-        public static void Send<TMessage>(this IMessageSender<TMessage> sender, string ipAddress, int port, byte[] data, int index, int count, Action<Exception> callback)
+        public static void Send<TMessage>(this IMessageSender<TMessage> sender, string ipAddress, int port, byte[] data, int index, int count, Action<Exception?>? callback)
             where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
         {
             Ensure.ArgumentNotNull(ipAddress, "ipAddress");
@@ -38,7 +38,7 @@ namespace Tubumu.Libuv
 
         #region IPAddress
 
-        public static void Send<TMessage>(this IMessageSender<TMessage> sender, IPAddress ipAddress, int port, byte[] data, Action<Exception> callback)
+        public static void Send<TMessage>(this IMessageSender<TMessage> sender, IPAddress ipAddress, int port, byte[] data, Action<Exception?>? callback)
             where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
         {
             Ensure.ArgumentNotNull(data, "data");
@@ -51,7 +51,7 @@ namespace Tubumu.Libuv
             sender.Send(ipAddress, port, data, null);
         }
 
-        public static void Send<TMessage>(this IMessageSender<TMessage> sender, IPAddress ipAddress, int port, byte[] data, int index, int count, Action<Exception> callback)
+        public static void Send<TMessage>(this IMessageSender<TMessage> sender, IPAddress ipAddress, int port, byte[] data, int index, int count, Action<Exception?>? callback)
             where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
         {
             Ensure.ArgumentNotNull(data, "data");
@@ -69,7 +69,7 @@ namespace Tubumu.Libuv
 
         #region TEndPoint
 
-        public static void Send<TMessage, TEndPoint>(this IMessageSender<TMessage> sender, TEndPoint endPoint, byte[] data, Action<Exception> callback)
+        public static void Send<TMessage, TEndPoint>(this IMessageSender<TMessage> sender, TEndPoint endPoint, byte[] data, Action<Exception?>? callback)
             where TMessage : IMessage<TEndPoint, ArraySegment<byte>>, new()
         {
             Ensure.ArgumentNotNull(data, "data");
@@ -82,7 +82,7 @@ namespace Tubumu.Libuv
             sender.Send(endPoint, data, null);
         }
 
-        public static void Send<TMessage, TEndPoint>(this IMessageSender<TMessage> sender, TEndPoint endPoint, byte[] data, int index, int count, Action<Exception> callback)
+        public static void Send<TMessage, TEndPoint>(this IMessageSender<TMessage> sender, TEndPoint endPoint, byte[] data, int index, int count, Action<Exception?>? callback)
             where TMessage : IMessage<TEndPoint, ArraySegment<byte>>, new()
         {
             Ensure.ArgumentNotNull(data, "data");
@@ -99,7 +99,7 @@ namespace Tubumu.Libuv
 
         #region TMessage
 
-        public static void Send<TMessage, TPayload>(this IMessageSender<TMessage> sender, string ipAddress, int port, TPayload payload, Action<Exception> callback)
+        public static void Send<TMessage, TPayload>(this IMessageSender<TMessage> sender, string ipAddress, int port, TPayload payload, Action<Exception?>? callback)
             where TMessage : IMessage<IPEndPoint, TPayload>, new()
         {
             Ensure.ArgumentNotNull(ipAddress, "ipAddress");
@@ -113,7 +113,7 @@ namespace Tubumu.Libuv
             sender.Send(ipAddress, port, payload, null);
         }
 
-        public static void Send<TMessage, TPayload>(this IMessageSender<TMessage> sender, IPAddress ipAddress, int port, TPayload payload, Action<Exception> callback)
+        public static void Send<TMessage, TPayload>(this IMessageSender<TMessage> sender, IPAddress ipAddress, int port, TPayload payload, Action<Exception?>? callback)
             where TMessage : IMessage<IPEndPoint, TPayload>, new()
         {
             Ensure.ArgumentNotNull(ipAddress, "ipAddress");
@@ -128,7 +128,7 @@ namespace Tubumu.Libuv
 
         #endregion TMessage
 
-        public static void Send<TMessage, TEndPoint, TPayload>(this IMessageSender<TMessage> sender, TEndPoint endPoint, TPayload payload, Action<Exception> callback)
+        public static void Send<TMessage, TEndPoint, TPayload>(this IMessageSender<TMessage> sender, TEndPoint endPoint, TPayload payload, Action<Exception?>? callback)
             where TMessage : IMessage<TEndPoint, TPayload>, new()
         {
             sender.Send(new TMessage() { EndPoint = endPoint, Payload = payload }, callback);

@@ -91,12 +91,11 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_connect(IntPtr req, IntPtr handle, ref sockaddr_in6 addr, callback callback);
 
-        public void Connect(IPEndPoint ipEndPoint, Action<Exception> callback)
+        public void Connect(IPEndPoint ipEndPoint, Action<Exception?>? callback)
         {
             CheckDisposed();
 
             Ensure.ArgumentNotNull(ipEndPoint, "ipEndPoint");
-            Ensure.ArgumentNotNull(callback, "callback");
             Ensure.AddressFamily(ipEndPoint.Address);
 
             ConnectRequest cpr = new ConnectRequest();

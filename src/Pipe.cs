@@ -14,7 +14,7 @@ namespace Tubumu.Libuv
 
         public void Bind(string name)
         {
-            Ensure.ArgumentNotNull(name, null);
+            Ensure.ArgumentNotNull(name, nameof(name));
             Invoke(NativeMethods.uv_pipe_bind, name);
         }
 
@@ -94,12 +94,11 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void uv_pipe_connect(IntPtr req, IntPtr handle, string name, callback connect_cb);
 
-        public void Connect(string name, Action<Exception> callback)
+        public void Connect(string name, Action<Exception?>? callback)
         {
             CheckDisposed();
 
             Ensure.ArgumentNotNull(name, "name");
-            Ensure.ArgumentNotNull(callback, "callback");
 
             ConnectRequest cpr = new ConnectRequest();
             Pipe pipe = this;
@@ -138,7 +137,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_write2(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int bufcnt, IntPtr sendHandle, callback callback);
 
-        public void Write(Handle handle, ArraySegment<byte> segment, Action<Exception> callback)
+        public void Write(Handle handle, ArraySegment<byte> segment, Action<Exception?>? callback)
         {
             CheckDisposed();
 
@@ -171,7 +170,7 @@ namespace Tubumu.Libuv
             if (count-- > 0)
             {
                 var type = uv_pipe_pending_type(NativeHandle);
-                Handle handle = null;
+                Handle? handle = null;
                 switch (type)
                 {
                     case HandleType.UV_UDP:
@@ -200,6 +199,6 @@ namespace Tubumu.Libuv
             HandleData?.Invoke(handle, data);
         }
 
-        public event Action<Handle, ArraySegment<byte>> HandleData;
+        public event Action<Handle, ArraySegment<byte>>? HandleData;
     }
 }

@@ -26,7 +26,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern ulong uv_timer_get_repeat(IntPtr timer);
 
-        private Action onehit;
+        private Action? onehit;
 
         public UVTimer()
             : this(Loop.Constructor)
@@ -101,7 +101,7 @@ namespace Tubumu.Libuv
             Tick?.Invoke();
         }
 
-        public event Action Tick;
+        public event Action? Tick;
 
         public void Start(ulong repeat)
         {

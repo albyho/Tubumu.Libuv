@@ -5,9 +5,9 @@ namespace Tubumu.Libuv.Threading.Tasks
 {
     public static class ListenerExtensions
     {
-        public static Task<TClient> AcceptAsync<TClient>(this IListener<TClient> listener)
+        public static Task<TClient?> AcceptAsync<TClient>(this IListener<TClient> listener)
         {
-            var tcs = new TaskCompletionSource<TClient>();
+            var tcs = new TaskCompletionSource<TClient?>();
 #if TASK_STATUS
 			HelperFunctions.SetStatus(tcs.Task, TaskStatus.Running);
 #endif
@@ -29,17 +29,17 @@ namespace Tubumu.Libuv.Threading.Tasks
                 return tcs.Task;
             }
 
-            Action<Exception, TClient> finish = null;
+            Action<Exception?, TClient?>? finish = null;
 
             Action connectioncb = () =>
             {
                 try
                 {
-                    finish(null, listener.Accept());
+                    finish?.Invoke(null, listener.Accept());
                 }
                 catch (Exception ex)
                 {
-                    finish(ex, default(TClient));
+                    finish?.Invoke(ex, default(TClient));
                 }
             };
 

@@ -60,7 +60,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        public void Close(Action callback)
+        public void Close(Action? callback)
         {
             async.Close(callback);
         }
@@ -98,6 +98,6 @@ namespace Tubumu.Libuv
             Callback?.Invoke(item);
         }
 
-        public event Action<T> Callback;
+        public event Action<T>? Callback;
     }
 }

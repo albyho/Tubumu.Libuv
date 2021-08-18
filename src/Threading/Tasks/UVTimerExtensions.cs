@@ -15,7 +15,9 @@ namespace Tubumu.Libuv.Threading.Tasks
             {
                 timer.Start(timeout, () =>
                 {
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
                     tcs.SetResult(null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
                 });
             }
             catch (Exception e)

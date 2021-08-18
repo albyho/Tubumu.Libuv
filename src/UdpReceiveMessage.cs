@@ -5,10 +5,6 @@ namespace Tubumu.Libuv
 {
     public class UdpReceiveMessage : UdpMessage
     {
-        public UdpReceiveMessage()
-        {
-        }
-
         public UdpReceiveMessage(IPEndPoint endPoint, byte[] payload)
             : this(endPoint, new ArraySegment<byte>(payload))
         {

@@ -45,6 +45,7 @@ namespace Tubumu.Libuv
 
     public class ProcessOptions
     {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string File { get; set; }
         public string[] Arguments { get; set; }
         public string[] Environment { get; set; }
@@ -55,6 +56,7 @@ namespace Tubumu.Libuv
         public int? GID { get; set; }
 
         public ICollection<UVStream> Streams { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     }
 
     unsafe public class Process : Handle
@@ -95,9 +97,9 @@ namespace Tubumu.Libuv
         internal static extern int uv_spawn(IntPtr loop, IntPtr handle, ref uv_process_options_t options);
 
         private uv_process_options_t process_options;
-        private readonly Action<Process> exitCallback;
+        private readonly Action<Process>? exitCallback;
 
-        internal Process(Loop loop, ProcessOptions options, Action<Process> exitCallback)
+        internal Process(Loop loop, ProcessOptions options, Action<Process>? exitCallback)
             : base(loop, HandleType.UV_PROCESS)
         {
             this.exitCallback = exitCallback;
@@ -136,7 +138,7 @@ namespace Tubumu.Libuv
             return Spawn(options, null);
         }
 
-        public static Process Spawn(ProcessOptions options, Action<Process> exitCallback)
+        public static Process Spawn(ProcessOptions options, Action<Process>? exitCallback)
         {
             return Spawn(Loop.Constructor, options, exitCallback);
         }
@@ -146,7 +148,7 @@ namespace Tubumu.Libuv
             return Spawn(loop, options, null);
         }
 
-        public static Process Spawn(Loop loop, ProcessOptions options, Action<Process> exitCallback)
+        public static Process Spawn(Loop loop, ProcessOptions options, Action<Process>? exitCallback)
         {
             var process = new Process(loop, options, exitCallback);
             int r = uv_spawn(loop.NativeHandle, process.NativeHandle, ref process.process_options);

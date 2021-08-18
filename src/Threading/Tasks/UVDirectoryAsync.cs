@@ -44,12 +44,12 @@ namespace Tubumu.Libuv.Threading.Tasks
             return HelperFunctions.Wrap(loop, path, newPath, UVDirectory.Rename);
         }
 
-        public static Task<UVDirectoryEntity[]> Read(string path)
+        public static Task<UVDirectoryEntity[]?> Read(string path)
         {
             return Read(Loop.Constructor, path);
         }
 
-        public static Task<UVDirectoryEntity[]> Read(this Loop loop, string path)
+        public static Task<UVDirectoryEntity[]?> Read(this Loop loop, string path)
         {
             return HelperFunctions.Wrap<Loop, string, UVDirectoryEntity[]>(loop, path, UVDirectory.Read);
         }

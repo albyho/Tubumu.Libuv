@@ -11,6 +11,6 @@ namespace Tubumu.Libuv
         bool HasRef { get; }
         bool IsClosed { get; }
 
-        void Close(Action callback);
+        void Close(Action? callback);
     }
 }

@@ -11,8 +11,8 @@ namespace Tubumu.Libuv
         {
         }
 
-        private readonly Action before;
-        private readonly Action after;
+        private readonly Action? before;
+        private readonly Action? after;
 
         public WorkRequest(Action before, Action after)
             : this()
@@ -24,14 +24,14 @@ namespace Tubumu.Libuv
         public static void BeforeCallback(IntPtr req)
         {
             var workreq = PermaRequest.GetObject<WorkRequest>(req);
-            workreq.before();
+            workreq?.before?.Invoke();
         }
 
         public static void AfterCallback(IntPtr req)
         {
             var workreq = PermaRequest.GetObject<WorkRequest>(req);
-            workreq.after();
-            workreq.Dispose();
+            workreq?.after?.Invoke();
+            workreq?.Dispose();
         }
     }
 }

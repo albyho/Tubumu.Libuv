@@ -9,13 +9,13 @@ namespace Tubumu.Libuv.Utilities
             Pump(readStream, writeStream, null);
         }
 
-        public static void Pump<T>(this IUVStream<T> readStream, IUVStream<T> writeStream, Action<Exception> callback)
+        public static void Pump<T>(this IUVStream<T> readStream, IUVStream<T> writeStream, Action<Exception?>? callback)
         {
             bool pending = false;
             bool done = false;
 
-            Action<Exception> call = null;
-            Action complete = () => call(null);
+            Action<Exception?>? call = null;
+            Action? complete = () => call?.Invoke(null);
 
             call = (ex) =>
             {

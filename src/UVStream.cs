@@ -38,7 +38,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        private ByteBufferAllocatorBase allocator;
+        private ByteBufferAllocatorBase? allocator;
 
         public ByteBufferAllocatorBase ByteBufferAllocator
         {
@@ -137,30 +137,30 @@ namespace Tubumu.Libuv
             Complete?.Invoke();
         }
 
-        public event Action Complete;
+        public event Action? Complete;
 
-        protected virtual void OnError(Exception exception)
+        protected virtual void OnError(Exception? exception)
         {
             Error?.Invoke(exception);
         }
 
-        public event Action<Exception> Error;
+        public event Action<Exception?>? Error;
 
         protected virtual void OnData(ArraySegment<byte> data)
         {
             Data?.Invoke(data);
         }
 
-        public event Action<ArraySegment<byte>> Data;
+        public event Action<ArraySegment<byte>>? Data;
 
         private void OnDrain()
         {
             Drain?.Invoke();
         }
 
-        public event Action Drain;
+        public event Action? Drain;
 
-        public void Write(ArraySegment<byte> data, Action<Exception> callback)
+        public void Write(ArraySegment<byte> data, Action<Exception?>? callback)
         {
             CheckDisposed();
 
@@ -193,7 +193,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        public void Write(IList<ArraySegment<byte>> buffers, Action<Exception> callback)
+        public void Write(IList<ArraySegment<byte>> buffers, Action<Exception?>? callback)
         {
             CheckDisposed();
 
@@ -234,7 +234,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r, callback);
         }
 
-        public void Shutdown(Action<Exception> callback)
+        public void Shutdown(Action<Exception?>? callback)
         {
             CheckDisposed();
 

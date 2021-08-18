@@ -44,8 +44,8 @@ namespace Tubumu.Libuv
         public int stdio_count;
         private uv_stdio_container_stream_t* stdio;
 
-        public int uid;
-        public int gid;
+        public int? uid;
+        public int? gid;
 
         // functions
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -84,13 +84,13 @@ namespace Tubumu.Libuv
             if (options.UID.HasValue)
             {
                 flags |= (uint)uv_process_flags.UV_PROCESS_SETUID;
-                uid = options.GID.Value;
+                uid = options.GID;
             }
 
             if (options.GID.HasValue)
             {
                 flags |= (uint)uv_process_flags.UV_PROCESS_SETGID;
-                gid = options.GID.Value;
+                gid = options.GID;
             }
 
             exit_cb = Marshal.GetFunctionPointerForDelegate(cb);
@@ -105,30 +105,33 @@ namespace Tubumu.Libuv
             stdio = (uv_stdio_container_stream_t*)Marshal.AllocHGlobal(stdio_count * sizeof(uv_stdio_container_stream_t));
 
             int i = 0;
-            foreach (var stream in options.Streams)
+            if (options.Streams != null)
             {
-                stdio[i].flags = 0;
-                if (stream != null)
+                foreach (var stream in options.Streams)
                 {
-                    stdio[i].stream = stream.NativeHandle;
-                    if ((stream.readable || stream.writeable) && stream is Pipe)
+                    stdio[i].flags = 0;
+                    if (stream != null)
                     {
-                        stdio[i].flags |= uv_stdio_flags.UV_CREATE_PIPE;
-                        if (stream.readable)
+                        stdio[i].stream = stream.NativeHandle;
+                        if ((stream.readable || stream.writeable) && stream is Pipe)
                         {
-                            stdio[i].flags |= uv_stdio_flags.UV_READABLE_PIPE;
+                            stdio[i].flags |= uv_stdio_flags.UV_CREATE_PIPE;
+                            if (stream.readable)
+                            {
+                                stdio[i].flags |= uv_stdio_flags.UV_READABLE_PIPE;
+                            }
+                            if (stream.writeable)
+                            {
+                                stdio[i].flags |= uv_stdio_flags.UV_WRITABLE_PIPE;
+                            }
                         }
-                        if (stream.writeable)
+                        else if (stream is UVStream)
                         {
-                            stdio[i].flags |= uv_stdio_flags.UV_WRITABLE_PIPE;
+                            stdio[i].flags |= uv_stdio_flags.UV_INHERIT_STREAM;
                         }
                     }
-                    else if (stream is UVStream)
-                    {
-                        stdio[i].flags |= uv_stdio_flags.UV_INHERIT_STREAM;
-                    }
+                    i++;
                 }
-                i++;
             }
         }
 

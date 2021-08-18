@@ -9,7 +9,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_mkdir(IntPtr loop, IntPtr req, string path, int mode, NativeMethods.uv_fs_cb callback);
 
-        public static void Create(Loop loop, string path, int mode, Action<Exception> callback)
+        public static void Create(Loop loop, string path, int mode, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest();
             fsr.Callback = callback;
@@ -22,7 +22,7 @@ namespace Tubumu.Libuv
             Create(loop, path, mode, null);
         }
 
-        public static void Create(Loop loop, string path, Action<Exception> callback)
+        public static void Create(Loop loop, string path, Action<Exception?>? callback)
         {
             Create(loop, path, 511, callback);
         }
@@ -32,12 +32,12 @@ namespace Tubumu.Libuv
             Create(loop, path, 511);
         }
 
-        public static void Create(string path, int mode, Action<Exception> callback)
+        public static void Create(string path, int mode, Action<Exception?>? callback)
         {
             Create(Loop.Constructor, path, mode, callback);
         }
 
-        public static void Create(string path, Action<Exception> callback)
+        public static void Create(string path, Action<Exception?>? callback)
         {
             Create(Loop.Constructor, path, 511, callback);
         }
@@ -55,7 +55,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_rmdir(IntPtr loop, IntPtr req, string path, NativeMethods.uv_fs_cb callback);
 
-        public static void Delete(Loop loop, string path, Action<Exception> callback)
+        public static void Delete(Loop loop, string path, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest();
             fsr.Callback = callback;
@@ -68,7 +68,7 @@ namespace Tubumu.Libuv
             Delete(loop, path, null);
         }
 
-        public static void Delete(string path, Action<Exception> callback)
+        public static void Delete(string path, Action<Exception?>? callback)
         {
             Delete(Loop.Constructor, path, callback);
         }
@@ -81,7 +81,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_rename(IntPtr loop, IntPtr req, string path, string newPath, NativeMethods.uv_fs_cb callback);
 
-        public static void Rename(Loop loop, string path, string newPath, Action<Exception> callback)
+        public static void Rename(Loop loop, string path, string newPath, Action<Exception?>? callback)
         {
             var fsr = new FileSystemRequest();
             fsr.Callback = callback;
@@ -94,7 +94,7 @@ namespace Tubumu.Libuv
             Rename(loop, path, newPath, null);
         }
 
-        public static void Rename(string path, string newPath, Action<Exception> callback)
+        public static void Rename(string path, string newPath, Action<Exception?>? callback)
         {
             Rename(Loop.Constructor, path, newPath, callback);
         }
@@ -110,7 +110,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_scandir(IntPtr loop, IntPtr req, string path, int flags, NativeMethods.uv_fs_cb callback);
 
-        public static void Read(Loop loop, string path, Action<Exception, UVDirectoryEntity[]> callback)
+        public static void Read(Loop loop, string path, Action<Exception?, UVDirectoryEntity[]?> callback)
         {
             var fsr = new FileSystemRequest();
             fsr.Callback = (ex) =>
@@ -134,7 +134,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        public static void Read(string path, Action<Exception, UVDirectoryEntity[]> callback)
+        public static void Read(string path, Action<Exception?, UVDirectoryEntity[]?> callback)
         {
             Read(Loop.Constructor, path, callback);
         }

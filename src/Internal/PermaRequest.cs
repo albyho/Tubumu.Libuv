@@ -82,7 +82,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        unsafe public static T GetObject<T>(IntPtr ptr) where T : class
+        unsafe public static T? GetObject<T>(IntPtr ptr) where T : class
         {
             uv_req_t* req = (uv_req_t*)ptr.ToPointer();
             return GCHandle.FromIntPtr(req->data).Target as T;

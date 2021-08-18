@@ -16,12 +16,12 @@ namespace Tubumu.Libuv.Extensions
 
     public static class AsyncExtensions
     {
-        public static async Task<string> ReadStringAsync(this IUVStream<ArraySegment<byte>> stream)
+        public static Task<string?> ReadStringAsync(this IUVStream<ArraySegment<byte>> stream)
         {
-            return await ReadStringAsync(stream, Encoding.UTF8);
+            return ReadStringAsync(stream, Encoding.UTF8);
         }
 
-        public static async Task<string> ReadStringAsync(this IUVStream<ArraySegment<byte>> stream, Encoding encoding)
+        public static async Task<string?> ReadStringAsync(this IUVStream<ArraySegment<byte>> stream, Encoding encoding)
         {
             if (encoding == null)
             {
@@ -43,7 +43,7 @@ namespace Tubumu.Libuv.Extensions
             return encoding.GetString(segment.Array, segment.Offset, segment.Count);
         }
 
-        public static string GetString(this Encoding encoding, ArraySegment<byte>? segment)
+        public static string? GetString(this Encoding encoding, ArraySegment<byte>? segment)
         {
             if (!segment.HasValue)
             {
@@ -90,7 +90,7 @@ namespace Tubumu.Libuv.Extensions
             hashAlgorithm.TransformBlock(input, 0, input.Length, outputBuffer, 0);
         }
 
-        public static void TransformBlock(this HashAlgorithm hashAlgorithm, ArraySegment<byte> input, byte[] outputBuffer, int outputOffset)
+        public static void TransformBlock(this HashAlgorithm hashAlgorithm, ArraySegment<byte> input, byte[]? outputBuffer, int outputOffset)
         {
             hashAlgorithm.TransformBlock(input.Array, input.Offset, input.Count, outputBuffer, outputOffset);
         }

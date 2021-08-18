@@ -4,12 +4,16 @@ namespace Tubumu.Libuv
 {
     public class CopyingByteBufferAllocator : ByteBufferAllocatorBase
     {
-        private BufferPin pin;
+        private BufferPin? pin;
 
         public byte[] Buffer
         {
             get
             {
+                if (pin == null)
+                {
+                    throw new NullReferenceException(nameof(pin));
+                }
                 return pin.Buffer;
             }
         }

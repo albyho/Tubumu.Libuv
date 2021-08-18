@@ -68,7 +68,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        public event Action<string, FileSystemEvent> Change;
+        public event Action<string, FileSystemEvent>? Change;
 
         private void OnChange(string filename, FileSystemEvent @event)
         {

@@ -43,7 +43,7 @@ namespace Tubumu.Libuv
             Listen(DefaultBacklog);
         }
 
-        public TStream Accept()
+        public TStream? Accept()
         {
             var stream = Create();
             try
@@ -65,6 +65,6 @@ namespace Tubumu.Libuv
             Connection?.Invoke();
         }
 
-        public event Action Connection;
+        public event Action? Connection;
     }
 }

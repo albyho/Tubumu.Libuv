@@ -5,7 +5,7 @@ namespace Tubumu.Libuv.Threading
 {
     public static class LoopExtensions
     {
-        public static void QueueUserWorkItem(this Loop loop, Action work, Action after = null)
+        public static void QueueUserWorkItem(this Loop loop, Action work, Action? after = null)
         {
             loop.Ref();
             ThreadPool.QueueUserWorkItem(_ =>
@@ -19,7 +19,7 @@ namespace Tubumu.Libuv.Threading
             });
         }
 
-        public static void QueueUserWorkItem<T>(this Loop loop, T state, Action<T> work, Action after = null)
+        public static void QueueUserWorkItem<T>(this Loop loop, T state, Action<T> work, Action? after = null)
         {
             loop.Ref();
             ThreadPool.QueueUserWorkItem(o =>

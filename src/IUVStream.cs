@@ -6,13 +6,13 @@ namespace Tubumu.Libuv
     {
         Loop Loop { get; }
 
-        event Action<Exception> Error;
+        event Action<Exception?>? Error;
 
         bool Readable { get; }
 
-        event Action Complete;
+        event Action? Complete;
 
-        event Action<TData> Data;
+        event Action<TData>? Data;
 
         void Resume();
 
@@ -20,12 +20,12 @@ namespace Tubumu.Libuv
 
         bool Writeable { get; }
 
-        event Action Drain;
+        event Action? Drain;
 
         long WriteQueueSize { get; }
 
-        void Write(TData data, Action<Exception> callback);
+        void Write(TData data, Action<Exception?>? callback);
 
-        void Shutdown(Action<Exception> callback);
+        void Shutdown(Action<Exception?>? callback);
     }
 }

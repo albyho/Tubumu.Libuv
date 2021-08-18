@@ -18,7 +18,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_bind(IntPtr handle, ref sockaddr_in6 sockaddr, uint flags);
 
-        private ByteBufferAllocatorBase allocator;
+        private ByteBufferAllocatorBase? allocator;
 
         public ByteBufferAllocatorBase ByteBufferAllocator
         {
@@ -66,7 +66,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr, callback callback);
 
-        public void Send(UdpMessage message, Action<Exception> callback)
+        public void Send(UdpMessage message, Action<Exception?>? callback)
         {
             CheckDisposed();
 
@@ -152,7 +152,7 @@ namespace Tubumu.Libuv
             Invoke(uv_udp_recv_stop);
         }
 
-        public event Action<UdpReceiveMessage> Message;
+        public event Action<UdpReceiveMessage>? Message;
 
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_set_ttl(IntPtr handle, int ttl);

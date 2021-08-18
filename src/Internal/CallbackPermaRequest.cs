@@ -14,11 +14,11 @@ namespace Tubumu.Libuv
         {
         }
 
-        public Action<int, CallbackPermaRequest> Callback { get; set; }
+        public Action<int, CallbackPermaRequest>? Callback { get; set; }
 
         protected void End(IntPtr ptr, int status)
         {
-            Callback(status, this);
+            Callback?.Invoke(status, this);
             Dispose();
         }
 

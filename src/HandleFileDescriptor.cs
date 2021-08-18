@@ -75,7 +75,7 @@ namespace Tubumu.Libuv
                     break;
 
                 default:
-                    throw new NotSupportedException();
+                    throw new NotSupportedException($"Unsupport \"{HandleType}\".");
             }
             Ensure.Success(r);
         }

@@ -6,7 +6,7 @@ namespace Tubumu.Libuv
 {
     internal class Ensure
     {
-        internal static Exception Map(int systemErrorCode, string name = null)
+        internal static Exception? Map(int systemErrorCode, string? name = null)
         {
             // no error, just return null
             if (!(systemErrorCode < 0))
@@ -26,7 +26,7 @@ namespace Tubumu.Libuv
                     return new System.IO.FileNotFoundException(string.Format("Could not find file '{0}'.", path), path);
 
                 case UVErrorCode.ENOTSUP:
-                    return new NotSupportedException();
+                    return new NotSupportedException("UVErrorCode.ENOTSUP");
 
                 default:
                     break;
@@ -48,17 +48,14 @@ namespace Tubumu.Libuv
             }
         }
 
-        internal static void Success(int errorCode, Action<Exception> callback, string name = null)
+        internal static void Success(int errorCode, Action<Exception?>? callback, string? name = null)
         {
             callback?.Invoke(Map(errorCode));
         }
 
-        internal static void Success<T>(Exception ex, Action<Exception, T> callback, T arg)
+        internal static void Success<T>(Exception? ex, Action<Exception?, T>? callback, T arg)
         {
-            if (callback != null)
-            {
-                callback(ex, arg);
-            }
+            callback?.Invoke(ex, arg);
         }
 
         public static void ArgumentNotNull(object argumentValue, string argumentName)

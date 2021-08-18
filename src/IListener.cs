@@ -6,8 +6,8 @@ namespace Tubumu.Libuv
     {
         void Listen();
 
-        event Action Connection;
+        event Action? Connection;
 
-        TStream Accept();
+        TStream? Accept();
     }
 }

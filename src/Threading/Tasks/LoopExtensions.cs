@@ -7,11 +7,11 @@ namespace Tubumu.Libuv.Threading.Tasks
     {
         public static Task QueueUserWorkItemAsync(this Loop loop, Action action)
         {
-            var tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<object?>();
 #if TASK_STATUS
 			HelperFunctions.SetStatus(tcs.Task, TaskStatus.Running);
 #endif
-            Exception exception = null;
+            Exception? exception = null;
             try
             {
                 loop.QueueUserWorkItem(() =>
@@ -43,14 +43,14 @@ namespace Tubumu.Libuv.Threading.Tasks
             return tcs.Task;
         }
 
-        public static Task<T> QueueUserWorkItemAsync<T>(this Loop loop, Func<T> action)
+        public static Task<T?> QueueUserWorkItemAsync<T>(this Loop loop, Func<T?> action)
         {
-            var tcs = new TaskCompletionSource<T>();
+            var tcs = new TaskCompletionSource<T?>();
 #if TASK_STATUS
 			HelperFunctions.SetStatus(tcs.Task, TaskStatus.Running);
 #endif
-            Exception exception = null;
-            T res = default(T);
+            Exception? exception = null;
+            T? res = default;
             try
             {
                 loop.QueueUserWorkItem(() =>

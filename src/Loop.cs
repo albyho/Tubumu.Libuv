@@ -34,7 +34,7 @@ namespace Tubumu.Libuv
         [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
         private static extern ulong uv_now(IntPtr loop);
 
-        private static Loop @default;
+        private static Loop? @default;
 
         public static Loop Default
         {
@@ -49,7 +49,7 @@ namespace Tubumu.Libuv
         }
 
         [ThreadStatic]
-        private static Loop currentLoop;
+        private static Loop? currentLoop;
 
         public IntPtr NativeHandle { get; protected set; }
 
@@ -239,7 +239,9 @@ namespace Tubumu.Libuv
                 if (ByteBufferAllocator != null)
                 {
                     ByteBufferAllocator.Dispose();
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
                     ByteBufferAllocator = null;
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
                 }
             }
 
@@ -258,7 +260,7 @@ namespace Tubumu.Libuv
         private static void WalkCallback(IntPtr handle, IntPtr arg)
         {
             var gchandle = GCHandle.FromIntPtr(arg);
-            (gchandle.Target as Action<IntPtr>)(handle);
+            (gchandle.Target as Action<IntPtr>)?.Invoke(handle);
         }
 
         public void Walk(Action<IntPtr> callback)
@@ -280,7 +282,7 @@ namespace Tubumu.Libuv
 
         internal Dictionary<IntPtr, Handle> handles = new Dictionary<IntPtr, Handle>();
 
-        public Handle GetHandle(IntPtr ptr)
+        public Handle? GetHandle(IntPtr ptr)
         {
             if (handles.TryGetValue(ptr, out var handle))
             {
@@ -292,12 +294,12 @@ namespace Tubumu.Libuv
             }
         }
 
-        public Handle[] ActiveHandles
+        public Handle?[] ActiveHandles
         {
             get
             {
                 var tmp = Handles;
-                Handle[] handles = new Handle[tmp.Length];
+                var handles = new Handle?[tmp.Length];
                 for (var i = 0; i < tmp.Length; i++)
                 {
                     handles[i] = GetHandle(tmp[i]);
@@ -330,7 +332,7 @@ namespace Tubumu.Libuv
             RefCount--;
         }
 
-        private LoopBackend loopBackend;
+        private LoopBackend? loopBackend;
 
         public LoopBackend Backend
         {

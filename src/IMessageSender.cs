@@ -4,6 +4,6 @@ namespace Tubumu.Libuv
 {
     public interface IMessageSender<TMessage>
     {
-        void Send(TMessage message, Action<Exception> callback);
+        void Send(TMessage message, Action<Exception?>? callback);
     }
 }
