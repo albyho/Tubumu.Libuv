@@ -21,7 +21,7 @@ namespace Tubumu.Libuv.Threading.Tasks
             Thread = thread;
         }
 
-        public override void Post(SendOrPostCallback d, object state)
+        public override void Post(SendOrPostCallback d, object? state)
         {
             if (Thread == Thread.CurrentThread)
             {

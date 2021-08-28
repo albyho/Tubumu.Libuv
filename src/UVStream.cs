@@ -297,7 +297,7 @@ namespace Tubumu.Libuv
         {
             CheckDisposed();
 
-            Ensure.ArgumentNotNull(data.Array, "data");
+            Ensure.ArgumentNotNull(data.Array!, "data");
 
             fixed (byte* bytePtr = data.Array)
             {

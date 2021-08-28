@@ -302,7 +302,7 @@ namespace Tubumu.Libuv
                 IntPtr sizePointer = (IntPtr)size;
                 int r = func(ptr, ref sizePointer);
                 Ensure.Success(r);
-                return Marshal.PtrToStringAuto(ptr, sizePointer.ToInt32());
+                return Marshal.PtrToStringAuto(ptr, sizePointer.ToInt32())!;
             }
             finally
             {
@@ -321,7 +321,7 @@ namespace Tubumu.Libuv
                 ptr = Marshal.AllocHGlobal(size);
                 int r = func(ptr, (IntPtr)size);
                 Ensure.Success(r);
-                return Marshal.PtrToStringAuto(ptr);
+                return Marshal.PtrToStringAuto(ptr)!;
             }
             finally
             {

@@ -43,7 +43,7 @@ namespace Tubumu.Libuv
     {
         internal CpuInformation(uv_cpu_info_t* info)
         {
-            Name = Marshal.PtrToStringAnsi(info->model);
+            Name = Marshal.PtrToStringAnsi(info->model)!;
             Speed = info->speed;
             Times = new CpuTimes(info->cpu_times);
         }
@@ -93,7 +93,7 @@ namespace Tubumu.Libuv
     {
         internal NetworkInterface(uv_interface_address_t* iface)
         {
-            Name = Marshal.PtrToStringAnsi(iface->name);
+            Name = Marshal.PtrToStringAnsi(iface->name)!;
             Internal = iface->is_internal != 0;
             byte[] phys_addr = new byte[6];
             for (int i = 0; i < phys_addr.Length; i++)

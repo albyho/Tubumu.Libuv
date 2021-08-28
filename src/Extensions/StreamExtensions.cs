@@ -40,7 +40,7 @@ namespace Tubumu.Libuv.Extensions
     {
         public static string GetString(this Encoding encoding, ArraySegment<byte> segment)
         {
-            return encoding.GetString(segment.Array, segment.Offset, segment.Count);
+            return encoding.GetString(segment.Array!, segment.Offset, segment.Count);
         }
 
         public static string? GetString(this Encoding encoding, ArraySegment<byte>? segment)
@@ -52,7 +52,7 @@ namespace Tubumu.Libuv.Extensions
             else
             {
                 var value = segment.Value;
-                return encoding.GetString(value.Array, value.Offset, value.Count);
+                return encoding.GetString(value.Array!, value.Offset, value.Count);
             }
         }
     }
@@ -92,7 +92,7 @@ namespace Tubumu.Libuv.Extensions
 
         public static void TransformBlock(this HashAlgorithm hashAlgorithm, ArraySegment<byte> input, byte[]? outputBuffer, int outputOffset)
         {
-            hashAlgorithm.TransformBlock(input.Array, input.Offset, input.Count, outputBuffer, outputOffset);
+            hashAlgorithm.TransformBlock(input.Array!, input.Offset, input.Count, outputBuffer, outputOffset);
         }
 
         public static void TransformBlock(this HashAlgorithm hashAlgorithm, ArraySegment<byte> input)
@@ -102,7 +102,7 @@ namespace Tubumu.Libuv.Extensions
 
         public static void TransformFinalBlock(this HashAlgorithm hashAlgorithm, ArraySegment<byte> input)
         {
-            hashAlgorithm.TransformFinalBlock(input.Array, input.Offset, input.Count);
+            hashAlgorithm.TransformFinalBlock(input.Array!, input.Offset, input.Count);
         }
 
         private static readonly byte[] emptyBuffer = new byte[0];

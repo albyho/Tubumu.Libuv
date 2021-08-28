@@ -7,7 +7,7 @@ namespace Tubumu.Libuv
     {
         public static void Read(this IUVStream<ArraySegment<byte>> stream, Encoding enc, Action<string> callback)
         {
-            stream.Data += (data) => callback(enc.GetString(data.Array, data.Offset, data.Count));
+            stream.Data += (data) => callback(enc.GetString(data.Array!, data.Offset, data.Count));
         }
 
         #region Write

@@ -40,7 +40,7 @@ namespace Tubumu.Libuv
 
         internal static T FromIntPtr<T>(IntPtr ptr)
         {
-            return (T)GCHandle.FromIntPtr(((uv_handle_t*)ptr)->data).Target;
+            return (T)GCHandle.FromIntPtr(((uv_handle_t*)ptr)->data).Target!;
         }
 
         public HandleType HandleType

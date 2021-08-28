@@ -24,7 +24,7 @@ namespace Tubumu.Libuv.Threading
             loop.Ref();
             ThreadPool.QueueUserWorkItem(o =>
             {
-                work?.Invoke((T)o);
+                work?.Invoke((T)o!);
                 loop.Sync(() =>
                 {
                     loop.Unref();
