@@ -31,7 +31,7 @@ namespace Tubumu.Libuv
         public int FileDescriptor { get; protected set; }
         public Encoding? Encoding { get; set; }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_open(IntPtr loop, IntPtr req, string path, int flags, int mode, NativeMethods.uv_fs_cb callback);
 
         public static void Open(Loop loop, string path, UVFileAccess access, Action<Exception?, UVFile?> callback)
@@ -55,7 +55,7 @@ namespace Tubumu.Libuv
             Open(Loop.Constructor, path, access, callback);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_close(IntPtr loop, IntPtr req, int fd, NativeMethods.uv_fs_cb callback);
 
         public void Close(Loop loop, Action<Exception?>? callback)
@@ -83,7 +83,7 @@ namespace Tubumu.Libuv
             Close(Loop);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_read(IntPtr loop, IntPtr req, int fd, uv_buf_t[] buf, int nbufs, long offset, NativeMethods.uv_fs_cb callback);
 
         public void Read(Loop loop, int offset, byte[] data, int index, int count, Action<Exception?, int?>? callback)
@@ -250,7 +250,7 @@ namespace Tubumu.Libuv
             return Read(loop, -1, text);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_write(IntPtr loop, IntPtr req, int fd, uv_buf_t[] bufs, int nbufs, long offset, NativeMethods.uv_fs_cb fs_cb);
 
         public void Write(Loop loop, int offset, ArraySegment<byte> segment, Action<Exception?, int?>? callback)
@@ -457,7 +457,7 @@ namespace Tubumu.Libuv
             return Write(this.Loop, text);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_stat(IntPtr loop, IntPtr req, string path, NativeMethods.uv_fs_cb callback);
 
         public static void Stat(Loop loop, string path, Action<Exception?, UVFileStat>? callback)
@@ -479,7 +479,7 @@ namespace Tubumu.Libuv
             Stat(Loop.Constructor, path, callback);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fstat(IntPtr loop, IntPtr req, int fd, NativeMethods.uv_fs_cb callback);
 
         public void Stat(Loop loop, Action<Exception?, UVFileStat>? callback)
@@ -496,7 +496,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fsync(IntPtr loop, IntPtr req, int fd, NativeMethods.uv_fs_cb callback);
 
         public void Sync(Loop loop, Action<Exception?>? callback)
@@ -524,7 +524,7 @@ namespace Tubumu.Libuv
             Sync((Action<Exception?>?)null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fdatasync(IntPtr loop, IntPtr req, int fd, NativeMethods.uv_fs_cb callback);
 
         public void DataSync(Loop loop, Action<Exception?>? callback)
@@ -552,7 +552,7 @@ namespace Tubumu.Libuv
             DataSync((Action<Exception?>?)null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_ftruncate(IntPtr loop, IntPtr req, int file, long offset, NativeMethods.uv_fs_cb callback);
 
         public void Truncate(Loop loop, int offset, Action<Exception?>? callback)
@@ -580,7 +580,7 @@ namespace Tubumu.Libuv
             Truncate(offset, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fchmod(IntPtr loop, IntPtr req, int fd, int mode, NativeMethods.uv_fs_cb callback);
 
         public void Chmod(Loop loop, int mode, Action<Exception?>? callback)
@@ -608,7 +608,7 @@ namespace Tubumu.Libuv
             Chmod(mode, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_chmod(IntPtr loop, IntPtr req, string path, int mode, NativeMethods.uv_fs_cb callback);
 
         public static void Chmod(Loop loop, string path, int mode, Action<Exception?>? callback)
@@ -636,7 +636,7 @@ namespace Tubumu.Libuv
             Chmod(path, mode, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_chown(IntPtr loop, IntPtr req, string path, int uid, int gid, NativeMethods.uv_fs_cb callback);
 
         public static void Chown(Loop loop, string path, int uid, int gid, Action<Exception?>? callback)
@@ -664,7 +664,7 @@ namespace Tubumu.Libuv
             Chown(path, uid, gid, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_fchown(IntPtr loop, IntPtr req, int fd, int uid, int gid, NativeMethods.uv_fs_cb callback);
 
         public void Chown(Loop loop, int uid, int gid, Action<Exception?>? callback)
@@ -692,7 +692,7 @@ namespace Tubumu.Libuv
             Chown(uid, gid, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_unlink(IntPtr loop, IntPtr req, string path, NativeMethods.uv_fs_cb callback);
 
         public static void Unlink(Loop loop, string path, Action<Exception?>? callback)
@@ -720,7 +720,7 @@ namespace Tubumu.Libuv
             Unlink(path, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_link(IntPtr loop, IntPtr req, string path, string newPath, NativeMethods.uv_fs_cb callback);
 
         public static void Link(Loop loop, string path, string newPath, Action<Exception?>? callback)
@@ -748,7 +748,7 @@ namespace Tubumu.Libuv
             Link(path, newPath, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_symlink(IntPtr loop, IntPtr req, string path, string newPath, int flags, NativeMethods.uv_fs_cb callback);
 
         public static void Symlink(Loop loop, string path, string newPath, Action<Exception?>? callback)
@@ -776,7 +776,7 @@ namespace Tubumu.Libuv
             Symlink(path, newPath, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_readlink(IntPtr loop, IntPtr req, string path, NativeMethods.uv_fs_cb callback);
 
         public static void Readlink(Loop loop, string path, Action<Exception?, string?> callback)

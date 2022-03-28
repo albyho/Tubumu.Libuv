@@ -12,7 +12,7 @@ namespace Tubumu.Libuv
             nativeHandle = loop.NativeHandle;
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_backend_fd(IntPtr loop);
 
         public int FileDescriptor
@@ -23,7 +23,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_backend_timeout(IntPtr loop);
 
         public int Timeout

@@ -106,7 +106,7 @@ namespace Tubumu.Libuv
 
         public event Action? Closed;
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_close(IntPtr handle, close_callback cb);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -177,7 +177,7 @@ namespace Tubumu.Libuv
             Close();
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_is_active(IntPtr handle);
 
         public bool IsActive
@@ -192,7 +192,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_is_closing(IntPtr handle);
 
         public bool IsClosing
@@ -220,13 +220,13 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_ref(IntPtr handle);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_unref(IntPtr handle);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_has_ref(IntPtr handle);
 
         public void Ref()
@@ -259,7 +259,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_handle_size(HandleType type);
 
         public static int Size(HandleType type)
@@ -267,7 +267,7 @@ namespace Tubumu.Libuv
             return uv_handle_size(type);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern HandleType uv_guess_handle(int fd);
 
         public static HandleType Guess(int fd)

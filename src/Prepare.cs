@@ -5,13 +5,13 @@ namespace Tubumu.Libuv
 {
     public class Prepare : StartableCallbackHandle
     {
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_prepare_init(IntPtr loop, IntPtr prepare);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_prepare_start(IntPtr prepare, uv_handle_cb callback);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_prepare_stop(IntPtr prepare);
 
         public Prepare()

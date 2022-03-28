@@ -5,7 +5,7 @@ namespace Tubumu.Libuv
 {
     public class Async : CallbackHandle
     {
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_async_init(IntPtr loop, IntPtr handle, uv_handle_cb callback);
 
         public Async()
@@ -20,7 +20,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_async_send(IntPtr handle);
 
         public void Send()

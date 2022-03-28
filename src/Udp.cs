@@ -9,13 +9,13 @@ namespace Tubumu.Libuv
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void recv_start_callback(IntPtr handle, IntPtr nread, ref uv_buf_t buf, IntPtr sockaddr, ushort flags);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_init(IntPtr loop, IntPtr handle);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_bind(IntPtr handle, ref sockaddr_in sockaddr, uint flags);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_bind(IntPtr handle, ref sockaddr_in6 sockaddr, uint flags);
 
         private ByteBufferAllocatorBase? allocator;
@@ -60,10 +60,10 @@ namespace Tubumu.Libuv
             Bind(endPoint.Address, endPoint.Port, false);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr, callback callback);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr, callback callback);
 
         public void Send(UdpMessage message, Action<Exception?>? callback)
@@ -102,7 +102,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_recv_start(IntPtr handle, alloc_callback alloc_callback, recv_start_callback callback);
 
         private static readonly recv_start_callback recv_start_cb = recv_callback;
@@ -144,7 +144,7 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_udp_recv_stop(IntPtr handle);
 
         public void Pause()
@@ -154,7 +154,7 @@ namespace Tubumu.Libuv
 
         public event Action<UdpReceiveMessage>? Message;
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_set_ttl(IntPtr handle, int ttl);
 
         public byte TTL
@@ -165,7 +165,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_set_broadcast(IntPtr handle, int on);
 
         public bool Broadcast
@@ -176,7 +176,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_set_multicast_ttl(IntPtr handle, int ttl);
 
         public byte MulticastTTL
@@ -187,7 +187,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_set_multicast_loop(IntPtr handle, int on);
 
         public bool MulticastLoop
@@ -198,7 +198,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_udp_getsockname(IntPtr handle, IntPtr addr, ref int length);
 
         public IPEndPoint LocalAddress
@@ -211,10 +211,10 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr);
 
         unsafe public int TrySend(UdpMessage message)

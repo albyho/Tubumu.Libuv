@@ -6,7 +6,7 @@ namespace Tubumu.Libuv
 {
     public class TcpListener : Listener<Tcp>, IBindable<TcpListener, IPEndPoint>, ILocalAddress<IPEndPoint>
     {
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_init(IntPtr loop, IntPtr handle);
 
         public TcpListener()
@@ -19,10 +19,10 @@ namespace Tubumu.Libuv
         {
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_bind(IntPtr handle, ref sockaddr_in sockaddr, uint flags);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_bind(IntPtr handle, ref sockaddr_in6 sockaddr, uint flags);
 
         private void Bind(IPAddress ipAddress, int port, bool dualstack)
@@ -48,7 +48,7 @@ namespace Tubumu.Libuv
             return new Tcp(Loop);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_simultaneos_accepts(IntPtr handle, int enable);
 
         public bool SimultaneosAccepts
@@ -72,7 +72,7 @@ namespace Tubumu.Libuv
 
     public class Tcp : UVStream, IConnectable<Tcp, IPEndPoint>, ILocalAddress<IPEndPoint>, IRemoteAddress<IPEndPoint>
     {
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_init(IntPtr loop, IntPtr handle);
 
         public Tcp()
@@ -85,10 +85,10 @@ namespace Tubumu.Libuv
         {
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_connect(IntPtr req, IntPtr handle, ref sockaddr_in addr, callback callback);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_connect(IntPtr req, IntPtr handle, ref sockaddr_in6 addr, callback callback);
 
         public void Connect(IPEndPoint ipEndPoint, Action<Exception?>? callback)
@@ -115,10 +115,10 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_nodelay(IntPtr handle, int enable);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_keepalive(IntPtr handle, int enable, int delay);
 
         public bool NoDelay
@@ -134,7 +134,7 @@ namespace Tubumu.Libuv
             Invoke(uv_tcp_keepalive, enable ? 1 : 0, delay);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_getpeername(IntPtr handle, IntPtr addr, ref int length);
 
         public IPEndPoint LocalAddress

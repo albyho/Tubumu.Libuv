@@ -64,10 +64,10 @@ namespace Tubumu.Libuv
         public long ExitCode { get; private set; }
         public int TermSignal { get; private set; }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_get_process_title(IntPtr buffer, IntPtr size);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_set_process_title(string title);
 
         public static string Title
@@ -82,7 +82,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_exepath(IntPtr buffer, ref IntPtr size);
 
         public static string ExecutablePath
@@ -93,7 +93,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_spawn(IntPtr loop, IntPtr handle, ref uv_process_options_t options);
 
         private uv_process_options_t process_options;
@@ -156,7 +156,7 @@ namespace Tubumu.Libuv
             return process;
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_process_kill(IntPtr handle, int signum);
 
         public void Kill(int signum)
@@ -169,7 +169,7 @@ namespace Tubumu.Libuv
             Kill((int)signum);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void uv_disable_stdio_inheritance();
 
         public static void DisableStdioInheritance()

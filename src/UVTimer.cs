@@ -8,22 +8,22 @@ namespace Tubumu.Libuv
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void uv_timer_cb(IntPtr loop);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_timer_init(IntPtr loop, IntPtr timer);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_timer_start(IntPtr timer, uv_timer_cb callback, ulong timeout, ulong repeat);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_timer_stop(IntPtr timer);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_timer_again(IntPtr timer);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_timer_set_repeat(IntPtr timer, ulong repeat);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern ulong uv_timer_get_repeat(IntPtr timer);
 
         private Action? onehit;

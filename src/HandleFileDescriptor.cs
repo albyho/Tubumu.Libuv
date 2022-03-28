@@ -5,10 +5,10 @@ namespace Tubumu.Libuv
 {
     public partial class HandleBase : IFileDescriptor
     {
-        [DllImport("libuv", EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_fileno_windows(IntPtr handle, out IntPtr fd);
 
-        [DllImport("libuv", EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_fileno_unix(IntPtr handle, out int fd);
 
         public IntPtr FileDescriptor
@@ -30,19 +30,19 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_open_unix(IntPtr handle, int sock);
 
-        [DllImport("libuv", EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_tcp_open_windows(IntPtr handle, IntPtr sock);
 
-        [DllImport("libuv", EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_udp_open_unix(IntPtr handle, int sock);
 
-        [DllImport("libuv", EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_udp_open_windows(IntPtr handle, IntPtr sock);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_pipe_open(IntPtr handle, int fd);
 
         public int Open(Func<IntPtr, int, int> unix, Func<IntPtr, IntPtr, int> windows, IntPtr handle, IntPtr fileDescriptor)

@@ -91,7 +91,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void uv_pipe_connect(IntPtr req, IntPtr handle, string name, callback connect_cb);
 
         public void Connect(string name, Action<Exception?>? callback)
@@ -108,7 +108,7 @@ namespace Tubumu.Libuv
             uv_pipe_connect(cpr.Handle, pipe.NativeHandle, name, ConnectRequest.CallbackDelegate);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_pipe_getpeername(IntPtr handle, IntPtr buf, ref IntPtr len);
 
         public string RemoteAddress
@@ -134,7 +134,7 @@ namespace Tubumu.Libuv
         {
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_write2(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int bufcnt, IntPtr sendHandle, callback callback);
 
         public void Write(Handle handle, ArraySegment<byte> segment, Action<Exception?>? callback)
@@ -158,10 +158,10 @@ namespace Tubumu.Libuv
             Ensure.Success(r);
         }
 
-        [DllImport(NativeMethods.libuv, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_pipe_pending_count(IntPtr handle);
 
-        [DllImport(NativeMethods.libuv, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern HandleType uv_pipe_pending_type(IntPtr pipe);
 
         protected override void OnData(ArraySegment<byte> data)

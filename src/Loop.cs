@@ -13,25 +13,25 @@ namespace Tubumu.Libuv
 
     public partial class Loop : IDisposable
     {
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr uv_default_loop();
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_loop_init(IntPtr handle);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_loop_close(IntPtr ptr);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr uv_loop_size();
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_run(IntPtr loop, uv_run_mode mode);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_update_time(IntPtr loop);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern ulong uv_now(IntPtr loop);
 
         private static Loop? @default;
@@ -252,7 +252,7 @@ namespace Tubumu.Libuv
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void walk_cb(IntPtr handle, IntPtr arg);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_walk(IntPtr loop, walk_cb cb, IntPtr arg);
 
         private static readonly walk_cb walk_callback = WalkCallback;
@@ -346,7 +346,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_stop(IntPtr loop);
 
         public void Stop()
@@ -354,7 +354,7 @@ namespace Tubumu.Libuv
             uv_stop(NativeHandle);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_loop_alive(IntPtr loop);
 
         public bool IsAlive

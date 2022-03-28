@@ -8,10 +8,10 @@ namespace Tubumu.Libuv
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int buffer_size_function(IntPtr handle, out int value);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_send_buffer_size(IntPtr handle, out int value);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_recv_buffer_size(IntPtr handle, out int value);
 
         private int Invoke(buffer_size_function function, int value)

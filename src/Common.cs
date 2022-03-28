@@ -31,10 +31,10 @@ namespace Tubumu.Libuv
         internal static bool isUnix = (System.Environment.OSVersion.Platform == PlatformID.Unix) || (System.Environment.OSVersion.Platform == PlatformID.MacOSX);
         internal static bool IsUnix { get { return isUnix; } }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         internal extern static int uv_ip4_addr(string ip, int port, out sockaddr_in address);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         internal extern static int uv_ip6_addr(string ip, int port, out sockaddr_in6 address);
 
         internal static sockaddr_in ToStruct(string ip, int port)
@@ -71,10 +71,10 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_ip4_name(IntPtr src, byte[] dst, IntPtr size);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_ip6_name(IntPtr src, byte[] dst, IntPtr size);
 
         private static bool IsMapping(byte[] data)
@@ -141,7 +141,7 @@ namespace Tubumu.Libuv
             return i;
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_req_size(RequestType type);
 
         internal static int Sizeof(RequestType type)
@@ -217,7 +217,7 @@ namespace Tubumu.Libuv
 
 #endif
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static uint uv_version();
 
         public static void GetVersion(out int major, out int minor, out int patch)
@@ -238,7 +238,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         unsafe internal extern static sbyte* uv_version_string();
 
         unsafe public static string VersionString

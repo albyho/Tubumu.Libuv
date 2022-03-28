@@ -52,10 +52,10 @@ namespace Tubumu.Libuv
         public int Speed { get; protected set; }
         public CpuTimes Times { get; protected set; }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_cpu_info(out IntPtr info, out int count);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void uv_free_cpu_info(IntPtr info, int count);
 
         internal static CpuInformation[] GetInfo()
@@ -111,10 +111,10 @@ namespace Tubumu.Libuv
         public IPAddress Address { get; protected set; }
         public IPAddress Netmask { get; protected set; }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_interface_addresses(out IntPtr address, out int count);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void uv_free_interface_addresses(IntPtr address, int count);
 
         internal static NetworkInterface[] GetInterfaces()
@@ -139,7 +139,7 @@ namespace Tubumu.Libuv
 
     unsafe public class LoadAverage
     {
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void uv_loadavg(IntPtr avg);
 
         internal LoadAverage()
@@ -161,7 +161,7 @@ namespace Tubumu.Libuv
     {
         public static class Memory
         {
-            [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
             internal static extern long uv_get_free_memory();
 
             public static long Free
@@ -172,7 +172,7 @@ namespace Tubumu.Libuv
                 }
             }
 
-            [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
             internal static extern long uv_get_total_memory();
 
             public static long Total
@@ -192,7 +192,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong uv_hrtime();
 
         public static ulong HighResolutionTime
@@ -227,7 +227,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int uv_uptime(out double uptime);
 
         public static double Uptime

@@ -25,7 +25,7 @@ namespace Tubumu.Libuv
 
         public Action<Exception?>? Callback { get; set; }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern void uv_fs_req_cleanup(IntPtr req);
 
         public override void Dispose(bool disposing)

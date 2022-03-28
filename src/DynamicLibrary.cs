@@ -52,22 +52,22 @@ namespace Tubumu.Libuv
 
     internal class LibuvDynamicLibrary : DynamicLibrary
     {
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_dlopen(IntPtr name, IntPtr handle);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_dlopen(string name, IntPtr handle);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void uv_dlclose(IntPtr handle);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int uv_dlsym(IntPtr handle, string name, out IntPtr ptr);
 
-        [DllImport("libuv")]
+        [DllImport(NativeMethods.Libuv)]
         internal extern static IntPtr uv_dlerror(IntPtr handle);
 
-        [DllImport("libuv")]
+        [DllImport(NativeMethods.Libuv)]
         internal extern static IntPtr uv_dlerror_free(IntPtr handle);
 
         private IntPtr handle = IntPtr.Zero;

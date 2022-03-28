@@ -6,7 +6,7 @@ namespace Tubumu.Libuv
 {
     public class UVDirectory
     {
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_mkdir(IntPtr loop, IntPtr req, string path, int mode, NativeMethods.uv_fs_cb callback);
 
         public static void Create(Loop loop, string path, int mode, Action<Exception?>? callback)
@@ -52,7 +52,7 @@ namespace Tubumu.Libuv
             Create(path, 511);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_rmdir(IntPtr loop, IntPtr req, string path, NativeMethods.uv_fs_cb callback);
 
         public static void Delete(Loop loop, string path, Action<Exception?>? callback)
@@ -78,7 +78,7 @@ namespace Tubumu.Libuv
             Delete(path, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_rename(IntPtr loop, IntPtr req, string path, string newPath, NativeMethods.uv_fs_cb callback);
 
         public static void Rename(Loop loop, string path, string newPath, Action<Exception?>? callback)
@@ -104,10 +104,10 @@ namespace Tubumu.Libuv
             Rename(path, newPath, null);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_scandir_next(IntPtr req, out uv_dirent_t ent);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_scandir(IntPtr loop, IntPtr req, string path, int flags, NativeMethods.uv_fs_cb callback);
 
         public static void Read(Loop loop, string path, Action<Exception?, UVDirectoryEntity[]?> callback)

@@ -13,13 +13,13 @@ namespace Tubumu.Libuv
     {
         private delegate void poll_callback(IntPtr handle, int status, int events);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_poll_init(IntPtr loop, IntPtr handle, int fd);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_poll_start(IntPtr handle, int events, poll_callback callback);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_poll_stop(IntPtr handle);
 
         public Poll(int fd)

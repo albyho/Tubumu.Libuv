@@ -5,13 +5,13 @@ namespace Tubumu.Libuv
 {
     public class Idle : StartableCallbackHandle
     {
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_idle_init(IntPtr loop, IntPtr idle);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_idle_start(IntPtr idle, uv_handle_cb callback);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_idle_stop(IntPtr idle);
 
         public Idle()

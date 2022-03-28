@@ -22,7 +22,7 @@ namespace Tubumu.Libuv
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void uv_fs_event_cb(IntPtr handle, string filename, int events, int status);
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_event_init(IntPtr loop, IntPtr handle);
 
         private static readonly uv_fs_event_cb fs_event_callback;
@@ -47,7 +47,7 @@ namespace Tubumu.Libuv
             Start(path, FileSystemEventFlags.Default);
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern int uv_fs_event_start(IntPtr handle, uv_fs_event_cb callback, string filename, int flags);
 
         public void Start(string path, FileSystemEventFlags flags)
@@ -78,7 +78,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_event_getpath(IntPtr handle, IntPtr buf, ref IntPtr len);
 
         public string Path
@@ -91,7 +91,7 @@ namespace Tubumu.Libuv
             }
         }
 
-        [DllImport("libuv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
         private static extern int uv_fs_event_stop(IntPtr handle);
 
         public void Stop()
