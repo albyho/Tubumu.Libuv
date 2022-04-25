@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Tubumu.Libuv
@@ -83,7 +83,7 @@ namespace Tubumu.Libuv
                     break;
 
                 default:
-                    throw new ArgumentException("access not supported");
+                    throw new ArgumentOutOfRangeException(nameof(access));
             }
 
             UVFile.Open(Loop, path, access, (ex, file) =>

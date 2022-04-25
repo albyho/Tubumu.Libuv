@@ -25,7 +25,7 @@ namespace Tubumu.Libuv.Extensions
         {
             if (encoding == null)
             {
-                throw new ArgumentException("encoding");
+                throw new ArgumentNullException(nameof(encoding));
             }
             var buffer = await stream.ReadStructAsync();
             if (!buffer.HasValue)

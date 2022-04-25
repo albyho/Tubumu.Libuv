@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace Tubumu.Libuv
@@ -53,9 +53,9 @@ namespace Tubumu.Libuv
 
         public uv_process_options_t(Process process, ProcessOptions options)
         {
-            if (string.IsNullOrEmpty(options.File))
+            if (string.IsNullOrWhiteSpace(options.File))
             {
-                throw new ArgumentException("file of processoptions can't be null");
+                throw new ArgumentException("file of processoptions can't be null or white space.");
             }
             else
             {

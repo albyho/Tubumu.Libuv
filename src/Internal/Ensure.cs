@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 
@@ -22,8 +22,8 @@ namespace Tubumu.Libuv
                     return new ArgumentException(UVException.StringError(systemErrorCode));
 
                 case UVErrorCode.ENOENT:
-                    var path = (name == null ? System.IO.Directory.GetCurrentDirectory() : Path.Combine(System.IO.Directory.GetCurrentDirectory(), name));
-                    return new System.IO.FileNotFoundException(string.Format("Could not find file '{0}'.", path), path);
+                    var path = (name == null ? Directory.GetCurrentDirectory() : Path.Combine(System.IO.Directory.GetCurrentDirectory(), name));
+                    return new FileNotFoundException(string.Format("Could not find file '{0}'.", path), path);
 
                 case UVErrorCode.ENOTSUP:
                     return new NotSupportedException("UVErrorCode.ENOTSUP");
